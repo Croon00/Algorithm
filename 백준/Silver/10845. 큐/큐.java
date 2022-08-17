@@ -7,13 +7,16 @@ import java.util.StringTokenizer;
 public class Main {
     static int [] queue;
     static int rear = 0, front = 0;
+    static StringBuilder sb;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
-        StringBuilder sb = new StringBuilder();
         int N = Integer.parseInt(br.readLine());
         queue = new int[N];
+        sb = new StringBuilder();
         for(int i = 0; i < N; i++){
+
             st = new StringTokenizer(br.readLine());
             String command = st.nextToken();
 
@@ -21,74 +24,68 @@ public class Main {
                 push(Integer.parseInt(st.nextToken()));
             }
             else if(command.equals("pop")){
-                System.out.println(pop());
+                pop();
+
             }
             else if(command.equals("size")){
-                System.out.println(size());
+                size();
             }
             else if(command.equals("empty")){
-                if(empty()){
-                    System.out.println(1);
-                }
-                else{
-                    System.out.println(0);
-                }
+                empty();
             }
             else if(command.equals("front")){
-                System.out.println(front());
+                front();
             }
             else if(command.equals("back")){
-                System.out.println(back());
+                back();
             }
         }
-
-
+        System.out.println(sb);
     }
 
     static void push(int x){
         queue[++rear % queue.length] = x;
-
     }
 
-    static int pop(){
-        if(empty()){
-            return -1;
+    static void pop(){
+        if(rear == front){
+            sb.append(-1).append("\n");
         }
         else{
             // 앞에서 ++해서 그 값을 뺀다.
-            return queue[++front % queue.length];
+            sb.append(queue[++front % queue.length]).append("\n");
         }
     }
 
-    static int size(){
+    static void size(){
         // 사이즈 값은 0부터 넣었기 때문에 +1씩 해서 뒤에 idx에서 앞에 idx를 빼준다.
-        return (rear + 1) - (front + 1);
+        sb.append ((rear + 1) - (front + 1)).append("\n");
     }
 
-    static boolean empty(){
+    static void empty(){
         if(rear == front){
-            return true;
+            sb.append(1).append("\n");
         }
         else{
-            return false;
-        }
-    }
-    
-    static int front(){
-        if(empty()){
-            return -1;
-        }
-        else{
-            return queue[front + 1 % queue.length];
+            sb.append(0).append("\n");
         }
     }
 
-    static int back(){
-       if(empty()){
-           return -1;
+    static void front(){
+        if(rear == front){
+            sb.append(-1).append("\n");
+        }
+        else{
+            sb.append(queue[front + 1 % queue.length]).append("\n");
+        }
+    }
+
+    static void back(){
+       if(rear == front){
+           sb.append(-1).append("\n");
        }
        else{
-           return queue[rear];
+           sb.append(queue[rear]).append("\n");
        }
     }
 }
