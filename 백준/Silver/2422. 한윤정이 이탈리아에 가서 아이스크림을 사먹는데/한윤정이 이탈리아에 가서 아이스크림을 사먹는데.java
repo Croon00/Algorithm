@@ -17,6 +17,7 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int iceCream = Integer.parseInt(st.nextToken());
             int iceCream2 = Integer.parseInt(st.nextToken());
+            // 반대로도 안되기 때문에 반대도 -1 넣기!!
             noMix[iceCream][iceCream2] = -1;
             noMix[iceCream2][iceCream] = -1;
         }
