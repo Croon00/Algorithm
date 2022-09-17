@@ -1,99 +1,51 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
+    // N개의 정점
+    static int N;
+    static ArrayList<Integer> [] graph;
+    // 부모 노드
+    static int [] parent;
     static StringBuilder sb = new StringBuilder();
-    static FastReader fr = new FastReader();
-    static int N, parent[];
-    static ArrayList<Integer> adj[];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-
-    static void input(){
-        N = fr.nextInt();
-        adj = new ArrayList[N + 1];
+        N = Integer.parseInt(br.readLine());
+        graph = new ArrayList[N + 1];
         parent = new int[N + 1];
-        for (int i = 1; i <= N; i++){
-            adj[i] = new ArrayList<>();
+        for(int i = 1; i <= N; i++){
+            graph[i] = new ArrayList<>();
         }
-
-        // 인접 리스트를 통한 그래프 생성
-        for (int i = 1; i < N; i++){
-            int x = fr.nextInt(), y = fr.nextInt();
-            adj[x].add(y);
-            adj[y].add(x);
+        // 정점 연결
+        for(int i = 0; i < N - 1; i++){
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            graph[a].add(b);
+            graph[b].add(a);
         }
-
-    }
-
-    // dfs(x, parent) : 정점 x의 부모가 parent 였고, x의 children들을 찾아주는 함수
-    // visit 을 사용하지 않고 parent를 이용해서 parent의 경우는 더 탐색할 필요 없는 노드로 둔다.
-    static void dfs (int x, int par) {
-
-        // y에 x의 자식 값 넣기
-        for (int y : adj[x]){
-            // 부모 노드인 경우 자식이 아님으로 건너띄기
-            if ( y == par){
-                continue;
-            }
-            // y의 부모 노드는 x를 가리킨다.
-            parent[y] = x;
-            dfs(y, x);
-        }
-
-    }
-
-    // bfs를 한 후 K까지 가는데 걸린 최소 길이를 보여준다.
-    static void pro() {
-        // 1 번 정점이 ROOT 이므로, 여기서 시작해서 Tree 구조를 파악한다.
-        // Root의 부모 없음으로 -1
+        // 루트 노드인 1 부터 부모는 -1로 설정
         dfs(1, -1);
-        for (int i = 2; i <= N; i++){
+        // 2번 노드 부터 순서대로 부모 노드 출력
+        for(int i = 2; i <= N; i++){
             System.out.println(parent[i]);
         }
     }
 
-    public static void main(String[] args) {
-       input();
-       pro();
-    }
-
-    static class FastReader{
-        BufferedReader br;
-        StringTokenizer st;
-        public FastReader(){
-            br = new BufferedReader(new InputStreamReader(System.in));
-
-        }
-        // 구분자를 가지고 받을 때, 기본 구분자 --> 공백
-        String next(){
-            while(st == null || !st.hasMoreElements()){
-                try {
-                    st = new StringTokenizer(br.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    static void dfs(int x, int par){
+        // x의 자식 노드들을 돌면서
+        for(int i = 0; i < graph[x].size(); i++){
+            // 자식 노드들이 가진 값이 현재 주어진 부모노드가 아닌 경우
+            if(graph[x].get(i) != par){
+                // 이 자식 노드들의 값은 현재 주어진 x의 값이 부모 노드이다.
+                parent[graph[x].get(i)] = x;
+                // 재귀로 해당 자식 노드들의 자식 노드들도 똑같이 dfs한다.
+                dfs(graph[x].get(i), x);
             }
-            return st.nextToken();
-        }
-
-        int nextInt(){
-            return Integer.parseInt(next());
-        }
-
-        long nextLong(){
-            return Long.parseLong(next());
-        }
-
-        // 구분자 없이 한 줄로 받을 때
-        String nextLine(){
-            String str = "";
-            try {
-                str = br.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return str;
         }
     }
-
 }
