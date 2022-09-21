@@ -87,7 +87,7 @@ public class Main {
         for(int i = 0; i < R; i++){
             for(int j = 0; j < C; j++){
                 if(map[i][j] == 'O'){
-                    // 현재 주어진 시간에서 -3 한 값이 주어진
+                    // 현재 주어진 시간에서 -3 전에 설치된 폭탄들이 터진다.
                     if(sec - 3 == mapSec[i][j]){
                         queue.add(i);
                         queue.add(j);
@@ -125,4 +125,3 @@ public class Main {
         }
     }
 }
-
