@@ -1,25 +1,32 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Solution {
-    static int N, M, k;
+    static int N, M, K;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        for(int i = 1; i <= 10; i++){
+            int T = Integer.parseInt(br.readLine());
+            st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        for(int tc = 1; tc <= 10; tc++) {
-            int T = sc.nextInt();
-            N = sc.nextInt();
-            M = sc.nextInt();
-            k = 1;
-            System.out.println("#" + T + " " +rec_func(N));
+            System.out.println("#" + T + " " + rec(N, M));
         }
+
     }
-
-    static int rec_func(int n){
-        if(k > M){
-            return 1;
+    static int rec(int n , int m){
+        if(m == 1){
+            return n;
         }
-        k++;
-        return rec_func(n) * n;
+        if(m % 2 == 0){
+            return rec(n, m/2) * rec(n, m/2);
+        }
+        else{
+            return rec(n, m/2) * rec(n, m/2)*n;
+        }
     }
 }
