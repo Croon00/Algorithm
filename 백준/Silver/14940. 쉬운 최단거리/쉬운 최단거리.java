@@ -9,12 +9,9 @@ public class Main {
 
     static int[][] map;
 
-    static int [][] ans;
-
     static int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-    // 기본 방문 여부
+    
     static boolean[][] visited;
-    // 그람 소유 여부
 
 
     static StringBuilder sb = new StringBuilder();
@@ -47,6 +44,7 @@ public class Main {
             }
         }
 
+        // 1인 데 방문 안 한 경우 못간 땅임으로 -1 추가
         for(int i = 0; i < N; i++){
             for(int j = 0; j < M; j++){
                 if(map[i][j] == 1 && !visited[i][j]){
