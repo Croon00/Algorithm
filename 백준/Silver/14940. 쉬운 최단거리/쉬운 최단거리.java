@@ -50,15 +50,15 @@ public class Main {
         for(int i = 0; i < N; i++){
             for(int j = 0; j < M; j++){
                 if(map[i][j] == 1 && !visited[i][j]){
-                    System.out.print(-1 + " ");
+                   sb.append(-1 + " ");
                 }
                 else{
-                    System.out.print(map[i][j] + " ");
+                    sb.append(map[i][j] + " ");
                 }
             }
-            System.out.println();
+            sb.append("\n");
         }
-
+        System.out.println(sb);
 
     }
 
