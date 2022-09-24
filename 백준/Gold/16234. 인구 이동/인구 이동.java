@@ -14,7 +14,7 @@ public class Main {
     // 방문 여부
     static boolean[][] visited;
     // 열린 국가들
-    static boolean[][] open;
+    static Queue<Integer> open;
 
     static int people, cnt, ans;
 
@@ -64,7 +64,7 @@ public class Main {
 
     static void bfs(int x, int y) {
         // 열린 국경 초기화
-        open = new boolean[N][N];
+        open = new LinkedList<>();
 
         // 인구수 초기화 해주고, 방문 체크 해준 후, 인구이동 횟수를 셀 cnt =1로 초기화(나누기 해주기 위해)
         Queue<Integer> queue = new LinkedList<>();
@@ -72,6 +72,8 @@ public class Main {
         queue.add(y);
         people = country[x][y];
         visited[x][y] = true;
+        open.add(x);
+        open.add(y);
         cnt = 1;
 
         while (!queue.isEmpty()) {
@@ -86,13 +88,14 @@ public class Main {
                     // 각 좌표에 있는 인구 차의 절대 값이 L 이상이면서 R 이하인 경우
                     if (Math.abs(country[r][c] - country[nr][nc]) >= L && Math.abs(country[r][c] - country[nr][nc]) <= R) {
                         // 방문하지 않았으면서 열리지 국경만
-                        if (!visited[nr][nc] && !open[nr][nc]) {
+                        if (!visited[nr][nc]) {
                             // 해당 좌표 인구를 누적해서 더하기, 열린 국경만큼 cnt++
                             people += country[nr][nc];
                             cnt++;
                             // 해당 좌표의 국경을 방문체크 해주고, 큐에 좌표 추가
-                            open[r][c] = true;
-                            open[nr][nc] = true;
+
+                            open.add(nr);
+                            open.add(nc);
                             queue.add(nr);
                             queue.add(nc);
                             visited[nr][nc] = true;
@@ -107,14 +110,11 @@ public class Main {
             // 인구 분배
             people = people / cnt;
             // 열린 국경 인구 분배하기
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (open[i][j]) {
-                        country[i][j] = people;
-                    }
-                }
+            while (!open.isEmpty()){
+                int x1 = open.poll();
+                int y1 = open.poll();
+                country[x1][y1] = people;
             }
         }
     }
 }
-
