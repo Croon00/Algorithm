@@ -1,3 +1,5 @@
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -54,6 +56,9 @@ public class Main {
 
     // dfs 로 들어가면서 5개 노드 연결 된 경우
     static void dfs(int idx, int cnt){
+        if(flag){
+            return;
+        }
         if(cnt == 5){
             flag = true;
             return;
@@ -69,3 +74,5 @@ public class Main {
         }
     }
 }
+
+
