@@ -1,78 +1,66 @@
+import java.io.*;
 import java.util.*;
 
-class Book_16508 {
-	int price;
-	String title;
-	
-	public Book_16508(int price, String title) {
-		this.price=price;
-		this.title=title;
-	}
-}
-
 public class Main {
-	static ArrayList<Book_16508> arr=new ArrayList<>();
-	static String str;
-	static int[] count=new int[26];
-	static int[] select=new int[26];
-	static int n,min=Integer.MAX_VALUE;
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Scanner sc=new Scanner(System.in);
-		str=sc.next();
-		n=sc.nextInt();
-		
-		// 만들고 싶은 단어의 구성된 알파벳의 배열 값을 1로 변경
-		for(int i=0;i<str.length();i++)
-			count[str.charAt(i)-'A']++;
-		
-		for(int i=0;i<n;i++) {
-			int price=sc.nextInt();
-			String title=sc.next();
-			
-			arr.add(new Book_16508(price,title));
-		}
-		
-		dfs(0,0);
-		System.out.println(min==Integer.MAX_VALUE?-1:min);
-	}
+	static int N;
+	static String sentence;
+	static String[][] book;
+	static int[] selected;
+	static int min;
 	
-	static void dfs(int depth, int total) {
-		// n개의 책을 모두 탐색했고, 알파벳을 모두 구했다면 최솟값 갱신
-		if(depth==n) {
-			if(check())
-				min=Math.min(total, min);
-			return;
+	static boolean check(int cnt) {
+		int[] letter = new int[26];
+		for (int i=0; i<cnt; i++) {
+			String name = book[selected[i]][1];
+			for (int j=0; j<name.length(); j++) {
+				letter[name.charAt(j) - 'A']++;
+			}
 		}
-		
-		/*
-		 * 책을 선택하는 방법에는 두 가지가 있다.
-		 * 현재 depth 번째의 책을 선택하느냐, 선택하지 않느냐 
-		 */
-		
-		/*
-		 * depth번째의 책을 선택한 경우 depth번째의 책의 제목을 구성하는
-		 * 알파벳의 배열 값을 모두 1로 변경한 뒤 depth를 1 증가, 
-		 * 총액을 depth번째의 책 가격만큼 증가키기고 재귀호출 한다.
-		 */
-		for(int i=0;i<arr.get(depth).title.length();i++)
-			select[arr.get(depth).title.charAt(i)-'A']++;
-		dfs(depth+1,total+arr.get(depth).price);
-		
-		/*
-		 * depth번째의 책을 선택하지 않는 경우는 
-		 * 이전에 증가시켰던 배열 값을 모두 초기화 시킨 후, 총액은 이전의 값을 유지한 채로 재귀호출 한다.
-		 */
-		for(int i=0;i<arr.get(depth).title.length();i++)
-			select[arr.get(depth).title.charAt(i)-'A']--;
-		dfs(depth+1,total);
-	}
-	
-	// 만들고 싶은 단어의 모든 알파벳이 나왔는지 확인하는 함수
-	static boolean check() {
-		for(int i=0;i<26;i++)
-			if(count[i]>select[i])
-				return false;
+		for (int i=0; i<sentence.length(); i++) {
+			if (letter[sentence.charAt(i) - 'A'] == 0) return false;
+			letter[sentence.charAt(i) - 'A']--;
+		}
 		return true;
 	}
+	
+	static void dfs(int start, int cnt, int sum) {
+		if (sum >= min) return;
+		if (cnt > 0 && check(cnt)) {
+			if (sum < min) min = sum;
+		}
+		
+		for (int i=start; i<N; i++) {
+			selected[cnt] = i;
+			dfs(i + 1, cnt + 1, sum + Integer.parseInt(book[i][0]));
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		sentence = br.readLine();
+		N = Integer.parseInt(br.readLine());
+		
+		book = new String[N][2];
+		for (int i=0; i<N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			book[i][0] = st.nextToken();
+			book[i][1] = st.nextToken();
+		}
+		
+		Arrays.sort(book, new Comparator<String[]>() {
+			@Override
+			public int compare(String[] o1, String[] o2) {
+				return Integer.parseInt(o1[0]) - Integer.parseInt(o2[0]);
+			}
+		});
+		
+		min = Integer.MAX_VALUE;
+		selected = new int[N];
+		dfs(0, 0, 0);
+		
+		if (min == Integer.MAX_VALUE) System.out.println(-1);
+		else System.out.println(min);
+		br.close();
+	}
+
 }
