@@ -1,4 +1,5 @@
 
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.*;
@@ -108,7 +109,7 @@ public class Main {
 
     static int find(int x){
         if(x == parent[x]){
-            return parent[x] = x;
+            return x;
         }
         else{
             return find(parent[x]);
@@ -121,12 +122,7 @@ public class Main {
         y = find(y);
 
         if(x != y){
-            if(x > y){
-                parent[x] = y;
-            }
-            else{
-                parent[y] = x;
-            }
+            parent[y] = x;
         }
     }
 }
