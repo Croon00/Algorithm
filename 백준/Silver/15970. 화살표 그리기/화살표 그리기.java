@@ -14,15 +14,10 @@ public class Main {
         각 점 p에 대해서 직선 화살표를 이용해 다른 점 q에 연결해야 함 (q는 p와 같은 색깔의 점들 중 거리가 가장 가까운 점)
      */
 
-    static class Point implements Comparable<Point>{
+    static class Point{
         int color;
         int point;
 
-
-        @Override
-        public int compareTo(Point o) {
-            return this.point - o.point;
-        }
     }
     static int N;
     static Point [] p;
@@ -46,7 +41,6 @@ public class Main {
             p[i].color = Integer.parseInt(st.nextToken());
         }
 
-        Arrays.sort(p);
 
         // 브루트포스로 두 점 사이 거리 누적해서 더하기
         for(int i = 0; i < N; i++){
