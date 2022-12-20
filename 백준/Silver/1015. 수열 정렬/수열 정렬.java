@@ -12,8 +12,13 @@ public class Main {
      */
     // 수열 P 또한 출력할때 P[0] ~ P[N-1]로 출력해서 보여주어야 한다.
 
-    // B 배열이 가질 num과 idx
+    // B 배열이 가질 num과 idx B배열에서 B[0] ~ B[N - 1] 가 가진 값이 정렬되어 있어야한다.
 
+    // 예제 입력 1 ex)
+    // A[0(idx)] = 2, A[1] = 3, A[2] = 1 에다가 P를 적용하면 배열 B가 되는데 이 배열 B는 A의 오름차순이여야 함으로 밑에와 같이
+    // B[P[2](idx)] = A[2] = 1, B[P[0]] = A[0] = 2, B[P[1]]] = A[1] = 3 이라고 볼 수 있고 B는 정렬 된 것임으로
+    // P[2] = 0, P[0] = 1, P[1] = 2이다.
+    // 따라서 P[0] = 1, P[1] = 2, P[2] = 0 이 출력 된다.
     static class Elements implements  Comparable<Elements>{
         int num, idx;
 
