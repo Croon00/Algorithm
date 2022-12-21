@@ -1,90 +1,77 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.OutputStreamWriter;
+import java.util.*;
 
 public class Main {
-    static StringBuilder sb = new StringBuilder();
-    static FastReader sc = new FastReader();
+    /*
+        나무의 배열이 주어졌을 때 적어도 M미터의 나무를 집에 가져가 위해서 절단기에 설정할 수 있는 높이의 최댓값 구하기
 
-    static int N, M, tree[];
+        나무의 높이를 정답으로 보아서 이분탐색으로 찾기 (완탐으로 찾으면 시간 초과)
+     */
+    static int N, M; // 나무의 수, 나무의 길이
+    static int [] tree; // 나무 배열
 
-    // 문제를 역으로 뒤집었을 때 매개변수가 될 수 있는 나무를 자를 높이(H)
-    static boolean determination (int H){
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        st = new StringTokenizer(br.readLine());
 
-        // H 높이로 나무를 잘랐을 때, 얻을 수 있는 길이(M)
-        // 나무의 길이로 얻을 수 있는 값이 10억(길이) x 백만(나무 갯수) 임으로 총 얻을 수 있는 길이인 sum은 long으로
-        long sum = 0;
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        for (int i = 1; i <= N; i++){
-            if (tree[i] > H){
-                sum += tree[i] - H;
+        tree = new int[N];
+
+        st = new StringTokenizer(br.readLine());
+        // 나무 높이 받기기
+        for(int i = 0;i < N; i++){
+            tree[i] = Integer.parseInt(st.nextToken());
+        }
+
+        search();
+    }
+
+    // M미터 이상 가져가는지 확인
+    static boolean check(int Height){
+        long treeSum = 0;
+
+        for(int i = 0; i < N; i++){
+            // 자를 수 있는 경우에만
+            if(tree[i] > Height){
+                treeSum += tree[i] - Height;
             }
         }
-        return sum >= M;
+        // 자르고 얻은 나무의 길이가 필요한 나무의 길이 이상일 경우 true
+        if(treeSum >= M){
+            return true;
+        }
+        // 아닐 경우 false;
+        else{
+            return false;
+        }
     }
-    static void process(){
-        long L = 0, R = 2000000000, ans = 0;
 
-        // [L .. R] 범위 안에 정답이 존재
-        // 이분 탐색과 determination 문제를 이용해서 찾으려하는 값을 빠르게 구할 수 있다.
+    static void search(){
+        // 나무의 길이를 0 ~ 20억 까지 준 후 이분탐색으로 찾기
+        int L = 0;
+        int R = 2000000000;
+        int ans = 0;
+
+        // 최대한 높게 자른 값이 정답이어야 한다.
         while (L <= R){
-            int mid = (int) ((L + R) / 2);
-            if (determination(mid)){
-                ans = mid;
+            int mid = (L + R) / 2;
+
+            // 해당 높이로 잘랐을 경우
+            if(check(mid)){
+                ans = Math.max(ans, mid);
                 L = mid + 1;
             }
-            else {
+            else{
                 R = mid - 1;
             }
         }
         System.out.println(ans);
-
-    }
-    static void Input(){
-        N = sc.nextInt();
-        M = sc.nextInt();
-        tree = new int[N + 1];
-        for (int i = 1; i <= N; i++){
-            tree[i] = sc.nextInt();
-        }
-    }
-
-    public static void main(String[] args) {
-        Input();
-        process();
-    }
-
-    static class FastReader{
-        BufferedReader br;
-        StringTokenizer st;
-
-        FastReader(){
-            br = new BufferedReader(new InputStreamReader(System.in));
-        }
-
-        String next(){
-            if(st == null || !st.hasMoreElements()) {
-                try {
-                    st = new StringTokenizer(br.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return st.nextToken();
-        }
-        int nextInt(){
-            return Integer.parseInt(next());
-        }
-
-        String nextLine(){
-            String str = "";
-            try {
-                str = br.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return str;
-        }
     }
 }
