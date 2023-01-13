@@ -28,28 +28,25 @@ public class Main {
         }
 
 
+        int R = 0;
+        int sum = 0;
         // 주어진 수는 -100 ~ 100 이고 N은 2 이상 10만 이하임으로 최소 값이 -1000만 임으로 -10000001로 둔다.
         int ans = -10000001;
 
-        // 두 포인터 이용
-        for(int L = 0; L < N; L++){
-            if(L + K > N) break;
-            // 0부터 시작
-            int sum = 0;
-            // 날짜 세기
-            int cnt = 0;
-            // R은 L부터
-            int R = L;
+        // N에서 K + 1을 뺀 만큼만 가능
+        for(int L = 0; L < N - K + 1; L++){
+            // 0이 아닌 경우에 전에 거 빼기
+           if(L != 0) sum -= num[L - 1];
 
-            // R 의 값이 범위를 넘지 않으면서 K번 날짜 이하 세었을 때는 계속 더하기
-            while (cnt < K && R < N){
-                sum += num[R++];
-                cnt++;
-            }
+           // R의 값 부터 해당 날짜 더한 값까지
+           while (R < L + K){
+               sum += num[R++];
+           }
 
-            // K번 까지 날자를 세었을 때만
-            if(cnt == K) ans = Math.max(ans, sum);
+           // 최대 값으로 변경
+           ans = Math.max(ans, sum);
         }
+
         System.out.println(ans);
     }
 }
