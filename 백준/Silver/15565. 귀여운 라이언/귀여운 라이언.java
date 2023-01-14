@@ -35,8 +35,8 @@ public class Main {
 
         int R = 0;
         int sum = 0;
-        // 최대 라이언 갯수는 10만개 임으로 10만1
-        int ans = Integer.MAX_VALUE;
+        // 최대 라이언 갯수는 100만개 임으로 100만1
+        int ans = 1000001;
         // 라이언 인형 갯수 세기
         int rionCnt = 0;
 
@@ -65,7 +65,7 @@ public class Main {
         }
 
         // 한 번이라도 갱신 되었으면 그 값 
-        if(ans != Integer.MAX_VALUE) System.out.println(ans);
+        if(ans != 1000001) System.out.println(ans);
         // 라이언 인형이 K 개 이상 없을 경우 -1 출력
         else System.out.println(-1);
     }
