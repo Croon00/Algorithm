@@ -41,15 +41,19 @@ public class Main {
             int linkTeamStats = 0;
             for(int i = 0; i < N; i++){
                 for(int j = 0; j < N; j++){
+                    // i == j 인 경우 0의 값이 들어감
                     if(i == j) continue;
+                    // startTeam인 경우는 누적으로 더해주기
                     if(startTeam[i] && startTeam[j]){
                         startTeamStats += S[i][j];
                     }
+                    // 아닌 경우 LinkTeam에 더해주기
                     else if(!startTeam[i] && !startTeam[j]){
                         linkTeamStats += S[i][j];
                     }
                 }
             }
+            // 최소 값을 가진 경우 정답 
             ans = Math.min(ans, Math.abs(startTeamStats - linkTeamStats));
         }
 
