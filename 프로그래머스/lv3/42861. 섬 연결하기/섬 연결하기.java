@@ -14,7 +14,7 @@ class Solution {
         // 크루스칼 알고리즘 사용
         
         // 가중치가 낮은 노드끼리 먼저 연결해야 함으로 오름차순으로 정렬
-        Arrays.sort(costs, (int[] c1, int[] c2) -> c1[2]-c2[2]);
+        Arrays.sort(costs, (int[] a, int[] b) -> a[2]-b[2]);
         
         parent = new int[n];
         // 부모 노드 초기화
