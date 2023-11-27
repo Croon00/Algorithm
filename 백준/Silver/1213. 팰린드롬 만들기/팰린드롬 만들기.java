@@ -61,6 +61,7 @@ public class Main {
                     while (alphabet[i] != 0){
                         // 남은 갯수가 홀 수 인경우
                         if(alphabet[i] % 2 != 0){
+                            // 이미 가운데 가야할 문자가 있는 경우 펠린드롬이 안됌
                             if(mid.length() != 0){
                                 return "I'm Sorry Hansoo";
                             }
